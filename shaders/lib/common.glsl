@@ -40,7 +40,7 @@ vec3 sunIrradiance = fogColor * vec3(4.0, 2.0, 1.0) * 0.5;
 vec3 sunRadiance = sunIrradiance / sunAngularRadius;
 const vec3 moonIrradiance = vec3(0.01, 0.01, 0.05) * 4.0;
 
-const float wetnessHalflife = 25.0;
+const float wetnessHalflife = 80.0;
 const float drynessHalflife = 25.0;
 
 #ifdef IS_MONOCLE
