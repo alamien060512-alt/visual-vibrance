@@ -371,29 +371,20 @@ void main() {
   #endif
 
   #ifdef RAIN_PUDDLES
-  float rainFactor =
-    clamp01(smoothstep(13.5 / 15.0, 14.5 / 15.0, lightmap.y)) * wetness;
+    vec3 worldGeoNormal = mat3(gbufferModelViewInverse) * tbnMatrix[2];
+    float upFacing = clamp01(smoothstep(0.6, 0.9, worldGeoNormal.y));
+    float skyExposure = clamp01(smoothstep(13.5 / 15.0, 14.5 / 15.0, lightmap.y));
+    float rainFactor = skyExposure * wetness * upFacing;
 
-  rainFactor *= smoothstep(
-    0.6,
-    0.7,
-    texture(
-      noisetex,
-      mod((feetPlayerPos.xz + cameraPosition.xz) / 2.0, 64.0) / 64.0
-    ).r
-  );
+    rainFactor *= smoothstep(0.4, 0.5,
+      texture(noisetex, mod((feetPlayerPos.xz + cameraPosition.xz) / 2.0, 64.0) / 64.0).r
+    );
 
-  material.f0 = mix(
-    material.f0,
-    vec3(0.02),
-    rainFactor * (1.0 - material.porosity)
-  );
-  material.roughness = mix(
-    material.roughness,
-    0.0,
-    rainFactor * (1.0 - material.porosity) * 0.8
-  );
-  material.albedo *= 1.0 - 0.5 * rainFactor * material.porosity;
+    float puddleStrength = rainFactor * (1.0 - material.porosity);
+    material.albedo *= 1.0 - 0.3 * puddleStrength;
+    material.albedo *= 1.0 - 0.5 * rainFactor * material.porosity;
+    material.f0 = mix(material.f0, vec3(0.02), puddleStrength);
+    material.roughness = mix(material.roughness, 0.0, puddleStrength * 0.9);
   #endif
 
   parallaxShadow = mix(parallaxShadow, 1.0, material.sss * 0.5);
