@@ -3,6 +3,8 @@
 
 const bool shadowHardwareFiltering = true;
 
+// #define CLEAR_WATER_FOG
+// #define CLEAR_LAVA_FOG
 // #define FULLBRIGHT
 // #define DEBUG_ENABLE
 // #define FREEZE_TIME
