@@ -171,6 +171,9 @@ vec3 defaultFog(vec3 color, vec3 viewPos) {
 
   switch (isEyeInWater) {
     case 2:
+      #ifdef CLEAR_LAVA_FOG
+      return color;
+      #endif
       end = 3;
       break;
     case 3:
