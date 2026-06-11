@@ -395,6 +395,9 @@ option.ORE_GLOW_STRENGTH.comment=Controls how brightly ores glow. §9No performa
 option.MAPLE_BIRCH=Maple Birch Leaves
 option.MAPLE_BIRCH.comment=Tints birch leaves with an autumn orange color. §9No performance impact!
 
+option.BETTER_GRASS=Better Grass
+option.BETTER_GRASS.comment=Extends the top grass texture to the sides of grass blocks. §9No performance impact!
+
 option.CLOUD_TYPE=Cloud Style
 option.CLOUD_TYPE.comment=Choose the cloud appearance style. §9No performance impact!
 value.CLOUD_TYPE.0=Original (Vanilla)
