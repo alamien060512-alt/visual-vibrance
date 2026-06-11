@@ -48,7 +48,9 @@ void main() {
   texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
   #ifdef BETTER_GRASS
   if (materialIsGrassBlock(int(mc_Entity.x + 0.5)) && gl_Normal.y == 0.0) {
-    texcoord = mc_midTexCoord + (texcoord - mc_midTexCoord) * vec2(1.0, -1.0);
+    vec2 halfSize = abs(texcoord - mc_midTexCoord);
+    // Sample the top row of the sprite
+    texcoord.y = mc_midTexCoord.y - halfSize.y;
   }
   #endif
   lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
