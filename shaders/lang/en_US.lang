@@ -224,6 +224,8 @@ option.ATMOSPHERIC_FOG.comment=Makes terrain fade into the distance. §2Impercep
 option.VANILLA_FOG_DENSITY=Fog Density
 option.VANILLA_FOG_DENSITY.comment=How much fog there is. §9No performance impact!
 
+option.CLEAR_WATER_FOG=Clear Water Fog
+option.CLEAR_LAVA_FOG=Clear Lava Fog
 option.CLOUDY_FOG=Fancy Fog
 option.CLOUDY_FOG.comment=Adds a mist-like fog sitting over the ground. More obvious in the morning and when it rains. §6Moderate performance impact.
 
@@ -351,3 +353,51 @@ value.tonemap.jodieReinhardTonemap=Jodie-Reinhard
 value.tonemap.uncharted2FilmicTonemap=Hable
 value.tonemap.hejlBurgessTonemap=Hejl-Burgess
 value.tonemap.ACESTonemap=ACES Approx.
+
+
+screen.SKY=Sky & Atmosphere
+screen.STARS=Stars
+screen.AURORA=Aurora Borealis
+screen.END_GALAXY=End Galaxy
+screen.FIREFLIES=Fireflies
+
+option.PROCEDURAL_STARS=Procedural Stars
+option.PROCEDURAL_STARS.comment=Adds procedural stars to the night sky. §9No performance impact!
+option.STAR_DENSITY=Star Density
+option.STAR_DENSITY.comment=Controls how many stars appear in the night sky. §9No performance impact!
+
+option.AURORA=Aurora Borealis
+option.AURORA.comment=Adds animated aurora lights to the night sky in cold biomes. §2Imperceptible performance impact.
+option.AURORA_STRENGTH=Aurora Strength
+option.AURORA_STRENGTH.comment=Controls the brightness of the aurora. §9No performance impact!
+
+option.END_GALAXY=End Galaxy
+option.END_GALAXY.comment=Adds a procedural galaxy and colourful stars to The End sky. §2Imperceptible performance impact.
+option.GALAXY_STRENGTH=Galaxy Brightness
+option.GALAXY_STRENGTH.comment=Controls how bright the galaxy nebula is. §9No performance impact!
+option.END_STAR_BRIGHTNESS=End Star Brightness
+option.END_STAR_BRIGHTNESS.comment=Controls how bright the stars are in The End. §9No performance impact!
+
+option.FIREFLIES=Fireflies
+option.FIREFLIES.comment=Adds glowing fireflies at night in warm biomes. §2Imperceptible performance impact.
+option.FIREFLY_STRENGTH=Firefly Brightness
+option.FIREFLY_STRENGTH.comment=Controls how bright the fireflies glow. §9No performance impact!
+option.FIREFLY_DENSITY=Firefly Density
+option.FIREFLY_DENSITY.comment=Controls how many fireflies appear. §9No performance impact!
+option.FIREFLY_SPACING=Firefly Spacing
+option.FIREFLY_SPACING.comment=Controls how spread out fireflies are. §9No performance impact!
+
+option.GLOWING_ORES=Glowing Ores
+option.GLOWING_ORES.comment=Makes ore blocks emit a subtle glow based on their color. §2Imperceptible performance impact.
+option.ORE_GLOW_STRENGTH=Ore Glow Strength
+option.ORE_GLOW_STRENGTH.comment=Controls how brightly ores glow. §9No performance impact!
+
+option.MAPLE_BIRCH=Maple Birch Leaves
+option.MAPLE_BIRCH.comment=Tints birch leaves with an autumn orange color. §9No performance impact!
+
+option.CLOUD_TYPE=Cloud Style
+option.CLOUD_TYPE.comment=Choose the cloud appearance style. §9No performance impact!
+value.CLOUD_TYPE.0=Original (Vanilla)
+value.CLOUD_TYPE.1=Fluffy (Cumulus)
+value.CLOUD_TYPE.2=Wispy (Cirrus)
+value.CLOUD_TYPE.3=Stormy (Overcast)

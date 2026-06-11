@@ -3,6 +3,8 @@
 
 const bool shadowHardwareFiltering = true;
 
+// #define CLEAR_WATER_FOG
+// #define CLEAR_LAVA_FOG
 // #define FULLBRIGHT
 // #define DEBUG_ENABLE
 // #define FREEZE_TIME
@@ -58,6 +60,7 @@ const float sunPathRotation = 0.0; // [-90.0 -85.0 -80.0 -75.0 -70.0 -65.0 -60.0
 #define FXAA_EDGE_SENSITIVITY 1 //[0 1 2]
 
 #define CLOUDS
+#define CLOUD_TYPE 0 // [0 1 2 3]
 #define CLOUD_PLANE_ALTITUDE 192 // [64 96 128 160 192]
 #define CLOUD_PLANE_HEIGHT 4 // [1 2 3 4 5 6 7 8]
 #define VANILLA_CLOUD_TEXTURE
@@ -82,7 +85,7 @@ const float sunPathRotation = 0.0; // [-90.0 -85.0 -80.0 -75.0 -70.0 -65.0 -60.0
 #define REFLECTION_MODE 2 // [0 1 2]
 #define FADE_REFLECTIONS
 // #define ROUGH_SKY_REFLECTIONS
-// #define RAIN_PUDDLES
+#define RAIN_PUDDLES
 
 // #define REFRACTION
 #define CAUSTICS
@@ -91,6 +94,31 @@ const float sunPathRotation = 0.0; // [-90.0 -85.0 -80.0 -75.0 -70.0 -65.0 -60.0
 #define WATER_HEIGHTMAP_HEIGHT 0.025
 
 // #define CUSTOM_SUN
+
+// sky
+#define PROCEDURAL_STARS
+#define STAR_DENSITY 200.0 // [50.0 100.0 150.0 200.0 300.0 400.0 500.0]
+
+#define AURORA
+#define AURORA_STRENGTH 1.0 // [0.25 0.5 0.75 1.0 1.5 2.0]
+
+#define END_GALAXY
+#define GALAXY_STRENGTH 1.0 // [0.25 0.5 0.75 1.0 1.5 2.0]
+#define END_STAR_BRIGHTNESS 1.0 // [0.25 0.5 0.75 1.0 1.5 2.0]
+
+// ores
+#define GLOWING_ORES
+#define ORE_GLOW_STRENGTH 1.0 // [0.25 0.5 0.75 1.0 1.5 2.0 3.0]
+
+// birch
+#define MAPLE_BIRCH
+
+// fireflies
+#define FIREFLIES
+#define FIREFLY_STRENGTH 1.5  // [0.25 0.5 0.75 1.0 1.5 2.0]
+#define FIREFLY_DENSITY  0.7  // [0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+#define FIREFLY_SPACING  6.0  // [4.0 6.0 8.0 10.0 14.0 20.0]
+
 
 // #define INFINITE_OCEAN
 #define SEA_LEVEL 63 // [-60 4 31 63]

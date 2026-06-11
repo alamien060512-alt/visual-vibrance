@@ -1,6 +1,8 @@
 #ifndef HILLAIRE_GLSL
 #define HILLAIRE_GLSL
 
+#include "/lib/atmosphere/aurora.glsl"
+
 vec3 sun(vec3 rayDir) {
   const float minSunCosTheta = cos(sunAngularRadius);
 
@@ -15,7 +17,13 @@ float fogify(float x, float w) {
 }
 
 vec3 endSky(vec3 dir, bool includeSun) {
-  return sunlightColor * smoothstep(0.8, 1.0, dot(dir, worldLightDir)) * float(includeSun);
+  vec3 sky = sunlightColor * smoothstep(0.8, 1.0, dot(dir, worldLightDir)) * float(includeSun);
+
+  #ifdef END_GALAXY
+  sky += getEndGalaxy(dir);
+  #endif
+
+  return sky;
 }
 
 vec3 getSky(vec3 color, vec3 rayDir, bool includeSun) {
@@ -42,10 +50,6 @@ vec3 getSky(vec3 color, vec3 rayDir, bool includeSun) {
   lum = rgb(lum);
 
   if (!includeSun) return lum;
-
-  // #ifdef fsh
-  // lum *= mix(0.9, 1.1, interleavedGradientNoise(floor(gl_FragCoord.xy))); // anti banding
-  // #endif
 
   lum *= skyMultiplier;
 

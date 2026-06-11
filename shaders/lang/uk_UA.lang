@@ -348,3 +348,25 @@ value.tonemap.jodieReinhardTonemap=Джоді-Рейнхард
 value.tonemap.uncharted2FilmicTonemap=Можливий
 value.tonemap.hejlBurgessTonemap=Гейл-Берґес
 value.tonemap.ACESTonemap=ACES Прибл.
+
+
+screen.SKY=Небо та атмосфера
+screen.STARS=Зірки
+screen.AURORA=Полярне сяйво
+screen.END_GALAXY=Галактика Краю
+screen.FIREFLIES=Світлячки
+
+option.PROCEDURAL_STARS=Процедурні зірки
+option.STAR_DENSITY=Щільність зірок
+option.AURORA=Полярне сяйво
+option.AURORA_STRENGTH=Яскравість сяйва
+option.END_GALAXY=Галактика Краю
+option.GALAXY_STRENGTH=Яскравість галактики
+option.END_STAR_BRIGHTNESS=Яскравість зірок Краю
+option.FIREFLIES=Світлячки
+option.FIREFLY_STRENGTH=Яскравість світлячків
+option.FIREFLY_DENSITY=Щільність світлячків
+option.FIREFLY_SPACING=Відстань між світлячками
+option.GLOWING_ORES=Руди що світяться
+option.ORE_GLOW_STRENGTH=Яскравість руд
+option.MAPLE_BIRCH=Кленове листя берези

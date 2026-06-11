@@ -205,6 +205,14 @@ void main() {
 
   albedo.rgb = pow(albedo.rgb, vec3(2.2));
 
+    #ifdef MAPLE_BIRCH
+  if (materialIsBirchLeaves(materialID)) {
+    float lum = luminance(albedo.rgb);
+    vec3 orange = pow(vec3(0.85, 0.42, 0.05), vec3(2.2));
+    albedo.rgb = orange * (lum * 2.0 + 0.1);
+  }
+  #endif
+
   #ifdef PATCHY_LAVA
   if (materialIsLava(materialID)) {
     vec3 worldPos = feetPlayerPos + cameraPosition;
@@ -247,6 +255,29 @@ void main() {
     material.emission = luminance(albedo.rgb) * emission;
   }
 
+  #endif
+
+    #ifdef GLOWING_ORES
+  if (materialIsOre(materialID)) {
+    // Detect ore type by dominant color channel of albedo
+    float r = albedo.r, g = albedo.g, b = albedo.b;
+    float maxC = max(r, max(g, b));
+    float minC = min(r, min(g, b));
+    float sat = (maxC - minC) / (maxC + 0.001);
+
+    // Only glow the colored ore pixels, not the stone background
+    // Stone is grey (low saturation), ore veins are colored (high saturation)
+    float orePixel = smoothstep(0.08, 0.22, sat);
+
+    // Ancient debris: high red-brown, low saturation — detect by brightness
+    if (r > 0.35 && g > 0.2 && b < 0.2 && sat < 0.3) {
+      orePixel = smoothstep(0.25, 0.45, luminance(albedo.rgb));
+    }
+
+    material.emission = mix(material.emission,
+      orePixel * ORE_GLOW_STRENGTH * luminance(albedo.rgb + 0.3),
+      orePixel);
+  }
   #endif
 
   if (renderStage == MC_RENDER_STAGE_ENTITIES && entityId == 1) {
@@ -371,29 +402,20 @@ void main() {
   #endif
 
   #ifdef RAIN_PUDDLES
-  float rainFactor =
-    clamp01(smoothstep(13.5 / 15.0, 14.5 / 15.0, lightmap.y)) * wetness;
+    vec3 worldGeoNormal = mat3(gbufferModelViewInverse) * tbnMatrix[2];
+    float upFacing = clamp01(smoothstep(0.6, 0.9, worldGeoNormal.y));
+    float skyExposure = clamp01(smoothstep(13.5 / 15.0, 14.5 / 15.0, lightmap.y));
+    float rainFactor = skyExposure * wetness * upFacing;
 
-  rainFactor *= smoothstep(
-    0.6,
-    0.7,
-    texture(
-      noisetex,
-      mod((feetPlayerPos.xz + cameraPosition.xz) / 2.0, 64.0) / 64.0
-    ).r
-  );
+    rainFactor *= smoothstep(0.4, 0.5,
+      texture(noisetex, mod((feetPlayerPos.xz + cameraPosition.xz) / 2.0, 64.0) / 64.0).r
+    );
 
-  material.f0 = mix(
-    material.f0,
-    vec3(0.02),
-    rainFactor * (1.0 - material.porosity)
-  );
-  material.roughness = mix(
-    material.roughness,
-    0.0,
-    rainFactor * (1.0 - material.porosity) * 0.8
-  );
-  material.albedo *= 1.0 - 0.5 * rainFactor * material.porosity;
+    float puddleStrength = rainFactor * (1.0 - material.porosity);
+    material.albedo *= 1.0 - 0.3 * puddleStrength;
+    material.albedo *= 1.0 - 0.5 * rainFactor * material.porosity;
+    material.f0 = mix(material.f0, vec3(0.02), puddleStrength);
+    material.roughness = mix(material.roughness, 0.0, puddleStrength * 0.9);
   #endif
 
   parallaxShadow = mix(parallaxShadow, 1.0, material.sss * 0.5);

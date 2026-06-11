@@ -22,13 +22,13 @@ bool materialIsLava(int id) {
 
 
 bool materialIsPlant(int id) {
-	return id == 1005 || id == 1006 || id == 1007 || id == 1021 || id == 1024 || id == 1026 || id == 1027 || id == 1028 || id == 1029;
+	return id == 1005 || id == 1006 || id == 1007 || id == 1021 || id == 1024 || id == 1034 || id == 1026 || id == 1027 || id == 1028 || id == 1029;
 }
 
 
 #define MATERIAL_LEAVES 1024
 bool materialIsLeaves(int id) {
-	return id == 1024;
+	return id == 1024 || id == 1034;
 }
 
 
@@ -48,7 +48,7 @@ Sway materialSwayType(int id) {
 		return Sway_HANGING;
 	if (id == 1005)
 		return Sway_FLOATING;
-	if (id == 1024)
+	if (id == 1024 || id == 1034)
 		return Sway_FULL;
 	return Sway_NONE;
 }
@@ -125,5 +125,19 @@ bool materialIsLetsLightThrough(int id) {
 	return id == 1001 || id == 1002 || id == 1003 || id == 1004 || id == 1005 || id == 1006 || id == 1007;
 }
 
+#define MATERIAL_GRASS_BLOCK 1032
+bool materialIsGrassBlock(int id) {
+	return id == 1032;
+}
+
+#define MATERIAL_ORE 1033
+bool materialIsOre(int id) {
+	return id == 1033;
+}
+
+#define MATERIAL_BIRCH_LEAVES 1034
+bool materialIsBirchLeaves(int id) {
+	return id == 1034;
+}
 
 #endif // MATERIAL_IDS_GLSL

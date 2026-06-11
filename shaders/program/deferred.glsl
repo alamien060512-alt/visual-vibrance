@@ -35,7 +35,9 @@ void main() {
 
 #ifdef fsh
 #include "/lib/atmosphere/sky/sky.glsl"
+#include "/lib/atmosphere/aurora.glsl"
 #include "/lib/atmosphere/clouds.glsl"
+#include "/lib/atmosphere/fireflies.glsl"
 
 in vec2 texcoord;
 
@@ -60,6 +62,31 @@ void main() {
   if(depth == 1.0){
     color.rgb = getSky(color.rgb, mat3(gbufferModelViewInverse) * normalize(viewPos), true);
   }
+  #endif
+
+  #ifdef WORLD_OVERWORLD
+  if(depth == 1.0) {
+    vec3 worldDir = mat3(gbufferModelViewInverse) * normalize(viewPos);
+
+        float nightFactor = clamp01(1.0 - worldSunDir.y * 4.0) * (1.0 - rainStrength);
+
+        #ifdef PROCEDURAL_STARS
+    float starBright = getStars(worldDir, nightFactor);
+    if (starBright > 0.001) {
+      vec3 starColor = getStarColor(worldDir);
+      color.rgb += starColor * starBright * 0.6;
+    }
+    #endif
+
+        #ifdef AURORA
+    color.rgb += getAurora(worldDir, nightFactor);
+    #endif
+  }
+
+    #ifdef FIREFLIES
+  color.rgb += getFireflies(texcoord, depthtex0);
+  #endif
+
   #endif
 
 

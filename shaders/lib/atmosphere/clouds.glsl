@@ -21,7 +21,7 @@
 #ifndef CLOUDS_GLSL
 #define CLOUDS_GLSL
 
-#define CLOUD_EXTINCTION_COLOR (vec3(0.1 + wetness))
+#define CLOUD_EXTINCTION_COLOR (vec3(0.04 + wetness * 0.1))
 
 float remap(float val, float oMin, float oMax, float nMin, float nMax) {
   return mix(nMin, nMax, smoothstep(oMin, oMax, val));
@@ -61,10 +61,61 @@ vec3 multipleScattering(
   return radiance;
 }
 
-float getCloudDensity(vec2 pos) {
-  ivec2 p = ivec2(floor(mod((pos + vec2(frameTimeCounter, 0.0)) / 24, 256)));
+float cloudNoise(vec2 p) {
+  vec2 i = floor(p); vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  float a = fract(sin(dot(i,              vec2(127.1,311.7))) * 43758.5453);
+  float b = fract(sin(dot(i + vec2(1,0),  vec2(127.1,311.7))) * 43758.5453);
+  float c = fract(sin(dot(i + vec2(0,1),  vec2(127.1,311.7))) * 43758.5453);
+  float d = fract(sin(dot(i + vec2(1,1),  vec2(127.1,311.7))) * 43758.5453);
+  return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+}
 
+float cloudFBM(vec2 p, int octaves) {
+  float v = 0.0; float a = 0.5;
+  for (int i = 0; i < octaves; i++) {
+    v += a * cloudNoise(p); p *= 2.1; a *= 0.5;
+  }
+  return v;
+}
+
+float getCloudDensity(vec2 pos) {
+  vec2 animPos = pos + vec2(frameTimeCounter * 4.0, 0.0);
+
+  #if CLOUD_TYPE == 0
+  // Original: vanilla Minecraft cloud texture
+  ivec2 p = ivec2(floor(mod((pos + vec2(frameTimeCounter, 0.0)) / 24, 256)));
   return texelFetch(vanillaCloudTex, p, 0).r;
+
+  #elif CLOUD_TYPE == 1
+  // Fluffy cumulus: round billowy clouds
+  vec2 uv = animPos * 0.0012;
+  float base = cloudFBM(uv * 3.0, 4);
+  float detail = cloudFBM(uv * 8.0 + 1.7, 3) * 0.3;
+  float cloud = base + detail;
+  return clamp01(smoothstep(0.62, 0.82, cloud) * 1.8);
+
+  #elif CLOUD_TYPE == 2
+  // Wispy cirrus: thin stretched streaks
+  vec2 uv = animPos * 0.0008;
+  uv.x *= 3.0;
+  float streak1 = cloudFBM(uv * 2.0, 3);
+  float streak2 = cloudFBM(uv * 3.5 + vec2(4.3, 1.7), 2) * 0.5;
+  float cloud = streak1 * 0.7 + streak2 * 0.3;
+  return clamp01(smoothstep(0.50, 0.68, cloud) * 1.2);
+
+  #elif CLOUD_TYPE == 3
+  // Stormy overcast: thick dark heavy coverage
+  vec2 uv = animPos * 0.0015;
+  float base  = cloudFBM(uv * 2.0, 5);
+  float turb  = cloudFBM(uv * 6.0 + 3.3, 3) * 0.4;
+  float cloud = base * 0.7 + turb * 0.3;
+  return clamp01(smoothstep(0.48, 0.68, cloud) * 2.0);
+
+  #else
+  ivec2 p = ivec2(floor(mod((pos + vec2(frameTimeCounter, 0.0)) / 24, 256)));
+  return texelFetch(vanillaCloudTex, p, 0).r;
+  #endif
 }
 
 vec3 getCloudShadow(vec3 origin) {
@@ -176,13 +227,13 @@ vec3 getClouds(
   vec3 radiance =
     sunlightColor *
       (1.0 - wetness * 0.5) *
-      (henyeyGreenstein(0.6, dot(worldDir, worldLightDir)) + 0.5) *
-      0.2 +
-    mix(skylightColor, sunlightColor, 0.2) *
+      (henyeyGreenstein(0.6, dot(worldDir, worldLightDir)) + 0.8) *
+      0.35 +
+    mix(skylightColor, vec3(1.0), 0.6) *
       (1.0 - wetness * 0.3) *
-      vec3(0.5, 1.0, 2.0) *
+      vec3(1.0, 1.0, 1.05) *
       henyeyGreenstein(0.0, 0.0) *
-      0.8;
+      1.2;
 
   scatter =
     (radiance - radiance * clamp01(transmittance)) / CLOUD_EXTINCTION_COLOR;
