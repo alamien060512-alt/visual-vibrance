@@ -46,6 +46,11 @@ flat out vec4 textureBounds;
 void main() {
   materialID = int(mc_Entity.x + 0.5);
   texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
+  #ifdef BETTER_GRASS
+  if (materialIsGrassBlock(int(mc_Entity.x + 0.5)) && gl_Normal.y == 0.0) {
+    texcoord = mc_midTexCoord + (texcoord - mc_midTexCoord) * vec2(1.0, -1.0);
+  }
+  #endif
   lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
   glcolor = gl_Color;
 
