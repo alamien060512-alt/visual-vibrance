@@ -46,13 +46,16 @@ flat out vec4 textureBounds;
 void main() {
   materialID = int(mc_Entity.x + 0.5);
   texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
+  vec2 originalTexcoord = texcoord;
+
   #ifdef BETTER_GRASS
   if (materialIsGrassBlock(int(mc_Entity.x + 0.5)) && gl_Normal.y == 0.0) {
     vec2 halfSize = abs(texcoord - mc_midTexCoord);
-    // Sample the top row of the sprite
-    texcoord.y = mc_midTexCoord.y - halfSize.y;
+    // Remap V: use X local offset to sample across the top face
+    texcoord.y = mc_midTexCoord.y - halfSize.y + (texcoord.x - (mc_midTexCoord.x - halfSize.x));
   }
   #endif
+
   lmcoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
   glcolor = gl_Color;
 
@@ -90,7 +93,7 @@ void main() {
 
   viewPos = (gbufferModelView * vec4(feetPlayerPos, 1.0)).xyz;
 
-  vec2 halfSize = abs(texcoord - mc_midTexCoord);
+  vec2 halfSize = abs(originalTexcoord - mc_midTexCoord);
   textureBounds = vec4(
     mc_midTexCoord.xy - halfSize,
     mc_midTexCoord.xy + halfSize
@@ -540,3 +543,4 @@ void main() {
 }
 
 #endif
+
