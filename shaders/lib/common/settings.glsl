@@ -113,6 +113,9 @@ const float sunPathRotation = 0.0; // [-90.0 -85.0 -80.0 -75.0 -70.0 -65.0 -60.0
 // birch
 #define MAPLE_BIRCH
 
+//BetterGrass
+#define BETTER_GRASS
+
 // fireflies
 #define FIREFLIES
 #define FIREFLY_STRENGTH 1.5  // [0.25 0.5 0.75 1.0 1.5 2.0]
